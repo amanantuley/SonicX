@@ -1,3 +1,34 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-headphone",
+      "description": "A futuristic headphone in a dark environment with neon lights",
+      "imageUrl": "https://images.unsplash.com/photo-1748189517364-cda16989c1c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZnV0dXJpc3RpYyUyMGhlYWRwaG9uZXN8ZW58MHx8fHwxNzY4Mjk5NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic headphones"
+    },
+    {
+      "id": "model-aurora",
+      "description": "The SonicPulse Aurora model headphones with purple accents",
+      "imageUrl": "https://images.unsplash.com/photo-1696163512515-20d9c656e367?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwdXJwbGUlMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODI5OTU2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "purple headphones"
+    },
+    {
+      "id": "model-nova",
+      "description": "The SonicPulse Nova model headphones with blue accents",
+      "imageUrl": "https://images.unsplash.com/photo-1689357642408-6ce34b5bd271?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxibHVlJTIwaGVhZHBob25lc3xlbnwwfHx8fDE3NjgyOTk1NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "blue headphones"
+    },
+    {
+      "id": "model-eclipse",
+      "description": "The SonicPulse Eclipse model headphones in metallic silver",
+      "imageUrl": "https://images.unsplash.com/photo-1621451766686-38d3f8964a0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzaWx2ZXIlMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODI5OTU2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "silver headphones"
+    },
+    {
+      "id": "why-sonicpulse",
+      "description": "A person wearing headphones, immersed in music",
+      "imageUrl": "https://images.unsplash.com/photo-1593697820940-43e77b53a1e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBtdXNpY3xlbnwwfHx8fDE3NjgyMDYwNDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person music"
+    }
+  ]
 }
