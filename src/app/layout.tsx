@@ -5,8 +5,8 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: 'SonicPulse - Premium Headphones',
-  description: 'Feel the Sound. Live the Bass. Discover premium wireless headphones by SonicPulse.',
+  title: 'SonicX - Premium Headphones',
+  description: 'Experience the future of sound. Discover premium wireless headphones by SonicX.',
 };
 
 export default function RootLayout({

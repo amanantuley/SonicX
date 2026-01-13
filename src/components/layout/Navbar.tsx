@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className="mr-4 flex items-center">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg font-headline">
             <Headphones className="h-6 w-6 text-primary" />
-            SonicPulse
+            SonicX
           </Link>
         </div>
         
@@ -58,7 +58,7 @@ export default function Navbar() {
                 <div className="flex justify-between items-center p-4 border-b">
                    <Link href="/" onClick={closeSheet} className="flex items-center gap-2 font-bold text-lg font-headline">
                     <Headphones className="h-6 w-6 text-primary" />
-                    SonicPulse
+                    SonicX
                   </Link>
                   <SheetClose asChild>
                     <Button variant="ghost" size="icon"><X/></Button>

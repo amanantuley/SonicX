@@ -24,7 +24,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
              <Link href="/" className="flex items-center gap-2 font-bold text-2xl font-headline">
               <Headphones className="h-8 w-8 text-primary" />
-              SonicPulse
+              SonicX
             </Link>
           </div>
           <CardTitle className="text-2xl font-headline">Welcome Back</CardTitle>
@@ -34,7 +34,7 @@ export default function LoginPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" defaultValue="demo@sonicpulse.com" />
+              <Input id="email" type="email" placeholder="you@example.com" defaultValue="demo@sonicx.com" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>

@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 const FRAME_COUNT = 40;
 const FRAME_PATH_PREFIX = '/sequence/ezgif-frame-';
@@ -21,7 +21,12 @@ const HeroAnimation: React.FC = () => {
   });
 
   const frameIndex = useTransform(scrollYProgress, (val) => Math.min(FRAME_COUNT - 1, Math.floor(val * FRAME_COUNT)));
-  
+  const springFrameIndex = useSpring(frameIndex, {
+    stiffness: 100,
+    damping: 20,
+    restDelta: 0.001,
+  });
+
   const opacity1 = useTransform(scrollYProgress, [0, 0.1, 0.25], [1, 1, 0]);
   const opacity2 = useTransform(scrollYProgress, [0.25, 0.3, 0.5, 0.55], [0, 1, 1, 0]);
   const opacity3 = useTransform(scrollYProgress, [0.55, 0.6, 0.8, 0.85], [0, 1, 1, 0]);
@@ -61,37 +66,46 @@ const HeroAnimation: React.FC = () => {
   }, []);
 
   const drawImage = (index: number) => {
-    if (!canvasRef.current || images.length === 0 || index >= images.length) return;
+    if (!canvasRef.current || images.length === 0 || index < 0 || index >= images.length) return;
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     if (!context) return;
     
-    const img = images[index];
+    const img = images[Math.floor(index)];
     if (!img) return;
 
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
-    const hRatio = canvasWidth / img.width;
-    const vRatio = canvasHeight / img.height;
-    const ratio = Math.min(hRatio, vRatio);
-    const centerShift_x = (canvasWidth - img.width * ratio) / 2;
-    const centerShift_y = (canvasHeight - img.height * ratio) / 2;
+    
+    // Fit image to canvas while maintaining aspect ratio
+    const imgAspectRatio = img.width / img.height;
+    const canvasAspectRatio = canvasWidth / canvasHeight;
+    
+    let drawWidth = canvasWidth;
+    let drawHeight = canvasHeight;
+    
+    if (imgAspectRatio > canvasAspectRatio) {
+      drawHeight = canvasWidth / imgAspectRatio;
+    } else {
+      drawWidth = canvasHeight * imgAspectRatio;
+    }
+
+    const x = (canvasWidth - drawWidth) / 2;
+    const y = (canvasHeight - drawHeight) / 2;
     
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+    context.drawImage(img, x, y, drawWidth, drawHeight);
   };
   
   useEffect(() => {
-    if (images.length === 0) return;
+    if (images.length === 0 || loading) return;
     
-    const unsubscribe = frameIndex.on('change', (latest) => {
-      if (latest >= 0 && latest < FRAME_COUNT) {
-        requestAnimationFrame(() => drawImage(latest));
-      }
+    const unsubscribe = springFrameIndex.on('change', (latest) => {
+      requestAnimationFrame(() => drawImage(latest));
     });
 
     return () => unsubscribe();
-  }, [frameIndex, images]);
+  }, [springFrameIndex, images, loading]);
 
   useEffect(() => {
     if (images.length === 0) return;
@@ -100,7 +114,7 @@ const HeroAnimation: React.FC = () => {
       if (canvasRef.current) {
         canvasRef.current.width = window.innerWidth;
         canvasRef.current.height = window.innerHeight;
-        const currentIndex = frameIndex.get();
+        const currentIndex = springFrameIndex.get();
         if(currentIndex >= 0 && currentIndex < images.length) {
           drawImage(currentIndex);
         }
@@ -113,7 +127,7 @@ const HeroAnimation: React.FC = () => {
     drawImage(0);
 
     return () => window.removeEventListener('resize', setCanvasSize);
-  }, [images, frameIndex]);
+  }, [images, springFrameIndex]);
 
   return (
     <div ref={scrollRef} className="h-[400vh] w-full relative">
@@ -126,7 +140,7 @@ const HeroAnimation: React.FC = () => {
         {!loading && !error && (
             <div className="absolute inset-0 z-10 w-full h-full text-white/90 pointer-events-none">
                 <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
-                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Zenith X. Pure Sound.</h2>
+                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">SonicX. Pure Sound.</h2>
                 </motion.div>
                  <motion.div style={{ opacity: opacity2 }} className="h-full flex flex-col items-start justify-center text-left container">
                   <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Precision Engineering.</h2>

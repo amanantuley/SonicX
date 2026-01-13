@@ -14,7 +14,7 @@ export default function WhySonicPulseSection() {
               Engineered for Emotion
             </h2>
             <p className="text-muted-foreground mb-6">
-              At SonicPulse, we don't just create headphones; we craft experiences. Our brand is built on a foundation of passion for pure, unadulterated sound. We believe music has the power to move you, and our mission is to deliver that power with unparalleled clarity and depth.
+              At SonicX, we don't just create headphones; we craft experiences. Our brand is built on a foundation of passion for pure, unadulterated sound. We believe music has the power to move you, and our mission is to deliver that power with unparalleled clarity and depth.
             </p>
             <ul className="space-y-4">
               <li className="flex items-start">
