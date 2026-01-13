@@ -77,21 +77,26 @@ const HeroAnimation: React.FC = () => {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     
-    // Fit image to canvas while maintaining aspect ratio
+    // Implement object-fit: cover logic
     const imgAspectRatio = img.width / img.height;
     const canvasAspectRatio = canvasWidth / canvasHeight;
     
     let drawWidth = canvasWidth;
     let drawHeight = canvasHeight;
-    
-    if (imgAspectRatio > canvasAspectRatio) {
-      drawHeight = canvasWidth / imgAspectRatio;
-    } else {
-      drawWidth = canvasHeight * imgAspectRatio;
-    }
+    let x = 0;
+    let y = 0;
 
-    const x = (canvasWidth - drawWidth) / 2;
-    const y = (canvasHeight - drawHeight) / 2;
+    if (imgAspectRatio > canvasAspectRatio) {
+      // Image is wider than canvas, so height is the constraining dimension
+      drawHeight = canvasHeight;
+      drawWidth = drawHeight * imgAspectRatio;
+      x = (canvasWidth - drawWidth) / 2;
+    } else {
+      // Image is taller than canvas, so width is the constraining dimension
+      drawWidth = canvasWidth;
+      drawHeight = drawWidth / imgAspectRatio;
+      y = (canvasHeight - drawHeight) / 2;
+    }
     
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(img, x, y, drawWidth, drawHeight);
@@ -124,6 +129,7 @@ const HeroAnimation: React.FC = () => {
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
     
+    // Draw the first frame on initial load
     drawImage(0);
 
     return () => window.removeEventListener('resize', setCanvasSize);
@@ -135,21 +141,21 @@ const HeroAnimation: React.FC = () => {
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         
         {loading && <div className="absolute text-white/60 z-20">Loading animation...</div>}
-        {error && <div className="absolute text-red-500 text-center z-20 p-4">{error}</div>}
+        {error && <div className="absolute text-red-500 text-center z-20 p-4 max-w-md mx-auto">{error}</div>}
 
         {!loading && !error && (
             <div className="absolute inset-0 z-10 w-full h-full text-white/90 pointer-events-none">
-                <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
-                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">SonicX. Pure Sound.</h2>
+                <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center p-4">
+                  <h2 className="text-4xl md:text-7xl font-bold font-headline tracking-tight">SonicX. Pure Sound.</h2>
                 </motion.div>
-                 <motion.div style={{ opacity: opacity2 }} className="h-full flex flex-col items-start justify-center text-left container">
-                  <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Precision Engineering.</h2>
+                 <motion.div style={{ opacity: opacity2 }} className="h-full flex flex-col items-start justify-center text-left container p-4">
+                  <h2 className="text-3xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Precision Engineering.</h2>
                 </motion.div>
-                 <motion.div style={{ opacity: opacity3 }} className="h-full flex flex-col items-end justify-center text-right container">
-                  <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Titanium Drivers.</h2>
+                 <motion.div style={{ opacity: opacity3 }} className="h-full flex flex-col items-end justify-center text-right container p-4">
+                  <h2 className="text-3xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Titanium Drivers.</h2>
                 </motion.div>
-                <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center">
-                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Hear Everything.</h2>
+                <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center p-4">
+                  <h2 className="text-4xl md:text-7xl font-bold font-headline tracking-tight">Hear Everything.</h2>
                 </motion.div>
             </div>
         )}
