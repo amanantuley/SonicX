@@ -8,21 +8,93 @@
     },
     {
       "id": "model-aurora",
-      "description": "The SonicPulse Aurora model headphones with purple accents",
+      "description": "The SonicX Aurora model headphones with purple accents",
       "imageUrl": "https://images.unsplash.com/photo-1696163512515-20d9c656e367?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwdXJwbGUlMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODI5OTU2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "purple headphones"
     },
     {
       "id": "model-nova",
-      "description": "The SonicPulse Nova model headphones with blue accents",
+      "description": "The SonicX Nova model headphones with blue accents",
       "imageUrl": "https://images.unsplash.com/photo-1689357642408-6ce34b5bd271?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxibHVlJTIwaGVhZHBob25lc3xlbnwwfHx8fDE3NjgyOTk1NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "blue headphones"
     },
     {
       "id": "model-eclipse",
-      "description": "The SonicPulse Eclipse model headphones in metallic silver",
+      "description": "The SonicX Eclipse model headphones in metallic silver",
       "imageUrl": "https://images.unsplash.com/photo-1621451766686-38d3f8964a0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzaWx2ZXIlMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODI5OTU2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "silver headphones"
+    },
+    {
+      "id": "model-pulse",
+      "description": "The SonicX Pulse model headphones in red",
+      "imageUrl": "https://picsum.photos/seed/pulse/600/600",
+      "imageHint": "red headphones"
+    },
+    {
+      "id": "model-rift",
+      "description": "The SonicX Rift earbuds in black",
+      "imageUrl": "https://images.unsplash.com/photo-1757168120889-4317e57a4849?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmxhY2slMjBlYXJidWRzfGVufDB8fHx8MTc2ODMwMDkzMnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "black earbuds"
+    },
+    {
+      "id": "model-core",
+      "description": "The SonicX Core earbuds in white",
+      "imageUrl": "https://images.unsplash.com/photo-1695634463734-5bc400b81247?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3aGl0ZSUyMGVhcmJ1ZHN8ZW58MHx8fHwxNzY4MzAwOTMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "white earbuds"
+    },
+    {
+      "id": "model-zenith",
+      "description": "The SonicX Zenith studio headphones",
+      "imageUrl": "https://images.unsplash.com/photo-1763407178461-2efa5726e241?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdHVkaW8lMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODI5NDIyMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "studio headphones"
+    },
+    {
+      "id": "model-motion",
+      "description": "The SonicX Motion on-ear headphones",
+      "imageUrl": "https://images.unsplash.com/photo-1636100007422-4d77bdd15a6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzcG9ydHMlMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODMwMDkzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sports headphones"
+    },
+    {
+      "id": "model-spark",
+      "description": "The SonicX Spark earbuds, glowing",
+      "imageUrl": "https://images.unsplash.com/photo-1634656883298-fb90a07ae83b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnbG93aW5nJTIwZWFyYnVkc3xlbnwwfHx8fDE3NjgzMDA5Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "glowing earbuds"
+    },
+    {
+      "id": "model-stratus",
+      "description": "The SonicX Stratus open-back headphones",
+      "imageUrl": "https://images.unsplash.com/photo-1600086827875-a63b01f1335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxvcGVuLWJhY2slMjBoZWFkcGhvbmVzfGVufDB8fHx8MTc2ODMwMDkzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "open-back headphones"
+    },
+    {
+      "id": "model-flex",
+      "description": "The SonicX Flex foldable on-ear headphones",
+      "imageUrl": "https://images.unsplash.com/photo-1722891067479-5fd39edbfc3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmb2xkYWJsZSUyMGhlYWRwaG9uZXN8ZW58MHx8fHwxNzY4MzAwOTMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "foldable headphones"
+    },
+    {
+      "id": "model-atom",
+      "description": "The SonicX Atom tiny true wireless earbuds",
+      "imageUrl": "https://images.unsplash.com/photo-1632568851266-b8e23c1738f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0aW55JTIwZWFyYnVkc3xlbnwwfHx8fDE3NjgzMDA5MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tiny earbuds"
+    },
+    {
+      "id": "model-forge",
+      "description": "The SonicX Forge metal headphones",
+      "imageUrl": "https://images.unsplash.com/photo-1484704849700-f032a568e944?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtZXRhbCUyMGhlYWRwaG9uZXN8ZW58MHx8fHwxNzY4MzAwOTMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "metal headphones"
+    },
+    {
+      "id": "model-glide",
+      "description": "The SonicX Glide minimalist on-ear headphones",
+      "imageUrl": "https://images.unsplash.com/photo-1624564039739-035817ba4098?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwaGVhZHBob25lc3xlbnwwfHx8fDE3NjgzMDA5MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "minimalist headphones"
+    },
+    {
+      "id": "model-echo",
+      "description": "The SonicX Echo spatial audio earbuds",
+      "imageUrl": "https://images.unsplash.com/photo-1741997852940-e2321fddabf2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c3BhdGlhbCUyMGF1ZGlvfGVufDB8fHx8MTc2ODMwMDkzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "spatial audio"
     },
     {
       "id": "why-sonicpulse",

@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 const navLinks = [
   { href: '/#features', label: 'Features' },
+  { href: '/shop', label: 'Shop' },
   { href: '/#models', label: 'Models' },
 ];
 
@@ -39,7 +40,7 @@ export default function Navbar() {
           <Link href="/login">
             <Button variant="ghost">Login</Button>
           </Link>
-          <Link href="/#models">
+          <Link href="/shop">
              <Button className="hidden sm:flex">Explore Models</Button>
           </Link>
         </div>
@@ -53,7 +54,7 @@ export default function Navbar() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background p-0">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
                    <Link href="/" onClick={closeSheet} className="flex items-center gap-2 font-bold text-lg font-headline">
@@ -74,8 +75,8 @@ export default function Navbar() {
                     Login
                   </Link>
                 </nav>
-                <div className="mt-auto p-4">
-                  <Link href="/#models" onClick={closeSheet} >
+                <div className="mt-auto p-4 border-t">
+                  <Link href="/shop" onClick={closeSheet} >
                      <Button className="w-full">Explore Models</Button>
                   </Link>
                 </div>

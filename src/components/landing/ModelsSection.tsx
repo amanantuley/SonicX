@@ -1,29 +1,12 @@
+import Link from 'next/link';
 import HeadphoneCard from '@/components/ui/HeadphoneCard';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-
-const models = [
-  {
-    id: 'model-aurora',
-    name: 'Aurora',
-    price: '$299',
-    description: 'Immersive sound with a vibrant, otherworldly design. Perfect for creators and audiophiles.'
-  },
-  {
-    id: 'model-nova',
-    name: 'Nova',
-    price: '$249',
-    description: 'Sleek, futuristic, and powerful. Experience crystal-clear audio in any environment.'
-  },
-  {
-    id: 'model-eclipse',
-    name: 'Eclipse',
-    price: '$349',
-    description: 'The pinnacle of audio engineering. Unmatched clarity and comfort for the discerning listener.'
-  },
-];
+import { products } from '@/lib/products';
+import { Button } from '../ui/button';
 
 export default function ModelsSection() {
-  const modelImages = PlaceHolderImages.filter(img => models.some(m => m.id === img.id));
+  const featuredProducts = products.filter(p => p.featured);
+  const modelImages = PlaceHolderImages.filter(img => featuredProducts.some(p => p.id === img.id));
 
   return (
     <section id="models" className="py-16 md:py-24 bg-black">
@@ -35,20 +18,26 @@ export default function ModelsSection() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {models.map((model) => {
+          {featuredProducts.map((model) => {
             const image = modelImages.find(img => img.id === model.id);
             if (!image) return null;
             return (
               <HeadphoneCard
                 key={model.id}
+                href={`/shop/${model.id}`}
                 imageUrl={image.imageUrl}
                 imageHint={image.imageHint}
                 name={model.name}
-                price={model.price}
+                price={`$${model.price}`}
                 description={model.description}
               />
             );
           })}
+        </div>
+        <div className="text-center mt-12">
+          <Link href="/shop">
+            <Button size="lg" variant="outline">View All Products</Button>
+          </Link>
         </div>
       </div>
     </section>
