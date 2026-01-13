@@ -21,6 +21,11 @@ const HeroAnimation: React.FC = () => {
   });
 
   const frameIndex = useTransform(scrollYProgress, (val) => Math.floor(val * FRAME_COUNT));
+  
+  const opacity1 = useTransform(scrollYProgress, [0, 0.1, 0.25], [1, 1, 0]);
+  const opacity2 = useTransform(scrollYProgress, [0.25, 0.3, 0.5, 0.55], [0, 1, 1, 0]);
+  const opacity3 = useTransform(scrollYProgress, [0.55, 0.6, 0.8, 0.85], [0, 1, 1, 0]);
+  const opacity4 = useTransform(scrollYProgress, [0.85, 0.9], [0, 1]);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -54,7 +59,7 @@ const HeroAnimation: React.FC = () => {
   }, []);
 
   const drawImage = (index: number) => {
-    if (!canvasRef.current || images.length === 0) return;
+    if (!canvasRef.current || images.length === 0 || index >= images.length) return;
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     if (!context) return;
@@ -77,7 +82,10 @@ const HeroAnimation: React.FC = () => {
   
   useEffect(() => {
     const unsubscribe = frameIndex.on('change', (latest) => {
-      requestAnimationFrame(() => drawImage(latest));
+      // Ensure latest is a valid index
+      if (latest >= 0 && latest < FRAME_COUNT) {
+        requestAnimationFrame(() => drawImage(latest));
+      }
     });
 
     return () => unsubscribe();
@@ -88,7 +96,10 @@ const HeroAnimation: React.FC = () => {
       if (canvasRef.current) {
         canvasRef.current.width = window.innerWidth;
         canvasRef.current.height = window.innerHeight;
-        drawImage(frameIndex.get());
+        const currentIndex = frameIndex.get();
+        if(currentIndex >= 0 && currentIndex < FRAME_COUNT) {
+          drawImage(currentIndex);
+        }
       }
     };
     setCanvasSize();
@@ -96,20 +107,13 @@ const HeroAnimation: React.FC = () => {
     return () => window.removeEventListener('resize', setCanvasSize);
   }, [images]);
 
-  if (error) {
-    return <div className="text-red-500 text-center">Error: {error}. Make sure the image sequence exists in /public/sequence/.</div>;
-  }
-  
-  const opacity1 = useTransform(scrollYProgress, [0, 0.1, 0.25], [1, 1, 0]);
-  const opacity2 = useTransform(scrollYProgress, [0.25, 0.3, 0.5, 0.55], [0, 1, 1, 0]);
-  const opacity3 = useTransform(scrollYProgress, [0.55, 0.6, 0.8, 0.85], [0, 1, 1, 0]);
-  const opacity4 = useTransform(scrollYProgress, [0.85, 0.9], [0, 1]);
-
   return (
     <div ref={scrollRef} className="h-[400vh] w-full relative">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-        {loading && <div className="absolute text-white/60">Loading animation...</div>}
+        
+        {error && <div className="absolute text-red-500 text-center z-20">Error: {error}. Make sure the image sequence exists in /public/sequence/.</div>}
+        {loading && <div className="absolute text-white/60 z-20">Loading animation...</div>}
 
         <div className="absolute inset-0 z-10 w-full h-full text-white/90">
             <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
