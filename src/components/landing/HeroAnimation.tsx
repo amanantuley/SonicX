@@ -36,7 +36,7 @@ const HeroAnimation: React.FC = () => {
         for (let i = 1; i <= FRAME_COUNT; i++) {
           const img = new Image();
           const frameNumber = i.toString().padStart(3, '0');
-          img.src = `${FRAME_PATH_PREFIX}${frameNumber}.webp`;
+          img.src = `${FRAME_PATH_PREFIX}${frameNumber}.jpg`;
 
           const promise = new Promise<HTMLImageElement>((resolve, reject) => {
             img.onload = () => resolve(img);
@@ -48,7 +48,7 @@ const HeroAnimation: React.FC = () => {
         setImages(loadedImages);
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message + ". Make sure the image sequence (ezgif-frame-001.webp to ezgif-frame-040.webp) exists in /public/sequence/.");
+          setError(err.message + ". Make sure the image sequence (ezgif-frame-001.jpg to ezgif-frame-040.jpg) exists in /public/sequence/.");
         } else {
           setError('An unknown error occurred while loading images.');
         }
