@@ -30,6 +30,8 @@ const HeroAnimation: React.FC = () => {
   useEffect(() => {
     const loadImages = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const imagePromises: Promise<HTMLImageElement>[] = [];
         for (let i = 1; i <= FRAME_COUNT; i++) {
           const img = new Image();
@@ -46,7 +48,7 @@ const HeroAnimation: React.FC = () => {
         setImages(loadedImages);
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message);
+          setError(err.message + ". Make sure the image sequence (ezgif-frame-001.webp to ezgif-frame-040.webp) exists in /public/sequence/.");
         } else {
           setError('An unknown error occurred while loading images.');
         }
@@ -67,7 +69,6 @@ const HeroAnimation: React.FC = () => {
     const img = images[index];
     if (!img) return;
 
-    // Scale to fit canvas while maintaining aspect ratio
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     const hRatio = canvasWidth / img.width;
@@ -81,8 +82,9 @@ const HeroAnimation: React.FC = () => {
   };
   
   useEffect(() => {
+    if (images.length === 0) return;
+    
     const unsubscribe = frameIndex.on('change', (latest) => {
-      // Ensure latest is a valid index
       if (latest >= 0 && latest < FRAME_COUNT) {
         requestAnimationFrame(() => drawImage(latest));
       }
@@ -92,11 +94,12 @@ const HeroAnimation: React.FC = () => {
   }, [frameIndex, images]);
 
   useEffect(() => {
+    if (images.length === 0) return;
+
     const setCanvasSize = () => {
       if (canvasRef.current) {
         canvasRef.current.width = window.innerWidth;
         canvasRef.current.height = window.innerHeight;
-        // Redraw the current frame after resize
         const currentIndex = frameIndex.get();
         if(currentIndex >= 0 && currentIndex < images.length) {
           drawImage(currentIndex);
@@ -107,10 +110,7 @@ const HeroAnimation: React.FC = () => {
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
     
-    // Draw initial image if available
-    if (images.length > 0) {
-      drawImage(0);
-    }
+    drawImage(0);
 
     return () => window.removeEventListener('resize', setCanvasSize);
   }, [images, frameIndex]);
@@ -121,10 +121,10 @@ const HeroAnimation: React.FC = () => {
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         
         {loading && <div className="absolute text-white/60 z-20">Loading animation...</div>}
-        {error && <div className="absolute text-red-500 text-center z-20">Error: {error}. Make sure the image sequence (ezgif-frame-001.webp to ezgif-frame-040.webp) exists in /public/sequence/.</div>}
+        {error && <div className="absolute text-red-500 text-center z-20 p-4">{error}</div>}
 
         {!loading && !error && (
-            <div className="absolute inset-0 z-10 w-full h-full text-white/90">
+            <div className="absolute inset-0 z-10 w-full h-full text-white/90 pointer-events-none">
                 <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
                   <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Zenith X. Pure Sound.</h2>
                 </motion.div>
@@ -134,7 +134,7 @@ const HeroAnimation: React.FC = () => {
                  <motion.div style={{ opacity: opacity3 }} className="h-full flex flex-col items-end justify-center text-right container">
                   <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Titanium Drivers.</h2>
                 </motion.div>
-                 <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center">
+                <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center">
                   <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Hear Everything.</h2>
                 </motion.div>
             </div>
