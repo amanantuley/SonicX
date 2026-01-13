@@ -2,22 +2,31 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-const FRAME_COUNT = 148; // Total number of frames in the sequence
-const FRAME_PATH_PREFIX = '/sequence/'; // Path to the image sequence in the public folder
+const FRAME_COUNT = 148;
+const FRAME_PATH_PREFIX = '/sequence/';
 
 const HeroAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Preload images
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ['start start', 'end end'],
+  });
+
+  const frameIndex = useTransform(scrollYProgress, (val) => Math.floor(val * FRAME_COUNT));
+
   useEffect(() => {
     const loadImages = async () => {
       try {
         const imagePromises: Promise<HTMLImageElement>[] = [];
-        for (let i = 1; i <= FRAME_COUNT; i++) {
+        for (let i = 0; i < FRAME_COUNT; i++) {
           const img = new Image();
           const frameNumber = i.toString().padStart(4, '0');
           img.src = `${FRAME_PATH_PREFIX}${frameNumber}.webp`;
@@ -44,88 +53,79 @@ const HeroAnimation: React.FC = () => {
     loadImages();
   }, []);
 
-  // Draw initial frame and set up scroll listener
-  useEffect(() => {
-    if (loading || error || images.length === 0) return;
-
+  const drawImage = (index: number) => {
+    if (!canvasRef.current || images.length === 0) return;
     const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
-    if (!canvas || !context) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
     
-    const firstImage = images[0];
-    canvas.width = firstImage.width;
-    canvas.height = firstImage.height;
-    context.drawImage(firstImage, 0, 0);
+    const img = images[index];
+    if (!img) return;
 
-    const handleScroll = () => {
-      const scrollFraction = window.scrollY / (window.innerHeight);
-      const frameIndex = Math.min(
-        FRAME_COUNT - 1,
-        Math.max(0, Math.floor(scrollFraction * FRAME_COUNT))
-      );
-
-      requestAnimationFrame(() => {
-         if (images[frameIndex]) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(images[frameIndex], 0, 0);
-         }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Scale to fit canvas while maintaining aspect ratio
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const hRatio = canvasWidth / img.width;
+    const vRatio = canvasHeight / img.height;
+    const ratio = Math.min(hRatio, vRatio);
+    const centerShift_x = (canvasWidth - img.width * ratio) / 2;
+    const centerShift_y = (canvasHeight - img.height * ratio) / 2;
     
-    // Initial draw
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [loading, error, images]);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+  };
   
-  // Handle resize
   useEffect(() => {
-    if (loading || error || images.length === 0) return;
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const unsubscribe = frameIndex.on('change', (latest) => {
+      requestAnimationFrame(() => drawImage(latest));
+    });
 
-    const handleResize = () => {
-        const context = canvas.getContext('2d');
-        if (!context) return;
-        
-        const currentFrameIndex = Math.min(
-          FRAME_COUNT - 1,
-          Math.max(0, Math.floor((window.scrollY / window.innerHeight) * FRAME_COUNT))
-        );
+    return () => unsubscribe();
+  }, [frameIndex, images]);
 
-        if (images[currentFrameIndex]) {
-            canvas.width = images[currentFrameIndex].width;
-            canvas.height = images[currentFrameIndex].height;
-            context.drawImage(images[currentFrameIndex], 0, 0);
-        }
+  useEffect(() => {
+    const setCanvasSize = () => {
+      if (canvasRef.current) {
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = window.innerHeight;
+        drawImage(frameIndex.get());
+      }
     };
-    
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial setup
-
-    return () => window.removeEventListener('resize', handleResize);
-
-  }, [loading, error, images]);
+    setCanvasSize();
+    window.addEventListener('resize', setCanvasSize);
+    return () => window.removeEventListener('resize', setCanvasSize);
+  }, [images]);
 
   if (error) {
     return <div className="text-red-500 text-center">Error: {error}. Make sure the image sequence exists in /public/sequence/.</div>;
   }
+  
+  const opacity1 = useTransform(scrollYProgress, [0, 0.1, 0.25], [1, 1, 0]);
+  const opacity2 = useTransform(scrollYProgress, [0.25, 0.3, 0.5, 0.55], [0, 1, 1, 0]);
+  const opacity3 = useTransform(scrollYProgress, [0.55, 0.6, 0.8, 0.85], [0, 1, 1, 0]);
+  const opacity4 = useTransform(scrollYProgress, [0.85, 0.9], [0, 1]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-        <canvas 
-            ref={canvasRef}
-            className="w-full h-full object-cover"
-            style={{ 
-                visibility: loading ? 'hidden' : 'visible',
-            }}
-        />
-        {loading && <div className="absolute text-white">Loading animation...</div>}
+    <div ref={scrollRef} className="h-[400vh] w-full relative">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+        {loading && <div className="absolute text-white/60">Loading animation...</div>}
+
+        <div className="absolute inset-0 z-10 w-full h-full text-white/90">
+            <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
+              <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Zenith X. Pure Sound.</h2>
+            </motion.div>
+             <motion.div style={{ opacity: opacity2 }} className="h-full flex flex-col items-start justify-center text-left container">
+              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Precision Engineering.</h2>
+            </motion.div>
+             <motion.div style={{ opacity: opacity3 }} className="h-full flex flex-col items-end justify-center text-right container">
+              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Titanium Drivers.</h2>
+            </motion.div>
+             <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center">
+              <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Hear Everything.</h2>
+            </motion.div>
+        </div>
+      </div>
     </div>
   );
 };
