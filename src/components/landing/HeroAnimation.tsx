@@ -4,8 +4,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const FRAME_COUNT = 148;
-const FRAME_PATH_PREFIX = '/sequence/';
+const FRAME_COUNT = 40;
+const FRAME_PATH_PREFIX = '/sequence/ezgif-frame-';
 
 const HeroAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,7 +20,7 @@ const HeroAnimation: React.FC = () => {
     offset: ['start start', 'end end'],
   });
 
-  const frameIndex = useTransform(scrollYProgress, (val) => Math.floor(val * FRAME_COUNT));
+  const frameIndex = useTransform(scrollYProgress, (val) => Math.min(FRAME_COUNT - 1, Math.floor(val * FRAME_COUNT)));
   
   const opacity1 = useTransform(scrollYProgress, [0, 0.1, 0.25], [1, 1, 0]);
   const opacity2 = useTransform(scrollYProgress, [0.25, 0.3, 0.5, 0.55], [0, 1, 1, 0]);
@@ -31,9 +31,9 @@ const HeroAnimation: React.FC = () => {
     const loadImages = async () => {
       try {
         const imagePromises: Promise<HTMLImageElement>[] = [];
-        for (let i = 0; i < FRAME_COUNT; i++) {
+        for (let i = 1; i <= FRAME_COUNT; i++) {
           const img = new Image();
-          const frameNumber = i.toString().padStart(4, '0');
+          const frameNumber = i.toString().padStart(3, '0');
           img.src = `${FRAME_PATH_PREFIX}${frameNumber}.webp`;
 
           const promise = new Promise<HTMLImageElement>((resolve, reject) => {
@@ -44,13 +44,13 @@ const HeroAnimation: React.FC = () => {
         }
         const loadedImages = await Promise.all(imagePromises);
         setImages(loadedImages);
-        setLoading(false);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
         } else {
           setError('An unknown error occurred while loading images.');
         }
+      } finally {
         setLoading(false);
       }
     };
@@ -96,39 +96,49 @@ const HeroAnimation: React.FC = () => {
       if (canvasRef.current) {
         canvasRef.current.width = window.innerWidth;
         canvasRef.current.height = window.innerHeight;
+        // Redraw the current frame after resize
         const currentIndex = frameIndex.get();
-        if(currentIndex >= 0 && currentIndex < FRAME_COUNT) {
+        if(currentIndex >= 0 && currentIndex < images.length) {
           drawImage(currentIndex);
         }
       }
     };
+
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
+    
+    // Draw initial image if available
+    if (images.length > 0) {
+      drawImage(0);
+    }
+
     return () => window.removeEventListener('resize', setCanvasSize);
-  }, [images]);
+  }, [images, frameIndex]);
 
   return (
     <div ref={scrollRef} className="h-[400vh] w-full relative">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         
-        {error && <div className="absolute text-red-500 text-center z-20">Error: {error}. Make sure the image sequence exists in /public/sequence/.</div>}
         {loading && <div className="absolute text-white/60 z-20">Loading animation...</div>}
+        {error && <div className="absolute text-red-500 text-center z-20">Error: {error}. Make sure the image sequence (ezgif-frame-001.webp to ezgif-frame-040.webp) exists in /public/sequence/.</div>}
 
-        <div className="absolute inset-0 z-10 w-full h-full text-white/90">
-            <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
-              <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Zenith X. Pure Sound.</h2>
-            </motion.div>
-             <motion.div style={{ opacity: opacity2 }} className="h-full flex flex-col items-start justify-center text-left container">
-              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Precision Engineering.</h2>
-            </motion.div>
-             <motion.div style={{ opacity: opacity3 }} className="h-full flex flex-col items-end justify-center text-right container">
-              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Titanium Drivers.</h2>
-            </motion.div>
-             <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center">
-              <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Hear Everything.</h2>
-            </motion.div>
-        </div>
+        {!loading && !error && (
+            <div className="absolute inset-0 z-10 w-full h-full text-white/90">
+                <motion.div style={{ opacity: opacity1 }} className="h-full flex flex-col items-center justify-center text-center">
+                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Zenith X. Pure Sound.</h2>
+                </motion.div>
+                 <motion.div style={{ opacity: opacity2 }} className="h-full flex flex-col items-start justify-center text-left container">
+                  <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Precision Engineering.</h2>
+                </motion.div>
+                 <motion.div style={{ opacity: opacity3 }} className="h-full flex flex-col items-end justify-center text-right container">
+                  <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tight max-w-md">Titanium Drivers.</h2>
+                </motion.div>
+                 <motion.div style={{ opacity: opacity4 }} className="h-full flex flex-col items-center justify-center text-center">
+                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tight">Hear Everything.</h2>
+                </motion.div>
+            </div>
+        )}
       </div>
     </div>
   );
