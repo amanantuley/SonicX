@@ -4,7 +4,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 const FRAME_COUNT = 148; // Total number of frames in the sequence
-const FRAME_PATH_PREFIX = '/sequence/0'; // Path to the image sequence in the public folder
+const FRAME_PATH_PREFIX = '/sequence/'; // Path to the image sequence in the public folder
 
 const HeroAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -19,7 +19,7 @@ const HeroAnimation: React.FC = () => {
         const imagePromises: Promise<HTMLImageElement>[] = [];
         for (let i = 1; i <= FRAME_COUNT; i++) {
           const img = new Image();
-          const frameNumber = i.toString().padStart(3, '0');
+          const frameNumber = i.toString().padStart(4, '0');
           img.src = `${FRAME_PATH_PREFIX}${frameNumber}.webp`;
 
           const promise = new Promise<HTMLImageElement>((resolve, reject) => {
