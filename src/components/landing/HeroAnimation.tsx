@@ -130,7 +130,9 @@ const HeroAnimation: React.FC = () => {
     window.addEventListener('resize', setCanvasSize);
     
     // Draw the first frame on initial load
-    drawImage(0);
+    if (images.length > 0) {
+      drawImage(0);
+    }
 
     return () => window.removeEventListener('resize', setCanvasSize);
   }, [images, springFrameIndex]);
